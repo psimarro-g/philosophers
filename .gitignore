@@ -1,0 +1,12 @@
+# Ignora archivos del sistema Mac 
+.DS_store
+
+# Ignora la carpeta node_modules
+obj
+
+# Ignora todos los archivos de texto
+*.o
+*.a
+.vscode
+philo/philo
+*.txt
