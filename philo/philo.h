@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/07 11:44:10 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:24:39 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <pthread.h>
 # include <limits.h>
 # include <unistd.h>
+# include <string.h>
+# include <stdlib.h>
 # include <sys/time.h>
 
 typedef struct s_philo
@@ -57,11 +59,12 @@ typedef struct s_program
 }				t_program;
 
 /* FT_PATOI.C */
-int	    ft_ptr_atoi(const char *str);
+int	    ft_patoi(const char *str);
 
 /* UTILS.C */
 void	check_err(t_program *program, int argc);
 void	ft_error(char *str);
 time_t	ft_time(void);
+size_t	ft_strlen(const char *s);
 
 #endif

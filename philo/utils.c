@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimarro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:56:17 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/02 11:41:03 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:45:47 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ void	check_err(t_program *program, int argc)
 	if (program->n_philo < 1|| program->t_die < 0 || program->t_eat < 0
 		|| program->t_sleep < 0)
 	{
-		printf("Error: negative values\n");
+		printf("Error: invalid values\n");
+		printf("Usage: ./philo n_philo t_die t_eat t_sleep [n_eat]\n");
 		exit(1);
 	}
 	if (argc == 6 && program->n_eat <= 0)
 	{
-		printf("Error: n_eat can't be <= 0\n");
+		printf("Error: invalid n_eat\n");
+		printf("Usage: ./philo n_philo t_die t_eat t_sleep [n_eat]\n");
 		exit(1);
 	}
 }
