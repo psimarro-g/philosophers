@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2023/10/26 22:43:23 by psimarro         ###   ########.fr        #
+#    Updated: 2023/11/07 12:23:08 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ RM			=	rm -f
 #                                   SOURCES                                    #
 # **************************************************************************** #
 
-SRC			=	main.c \
+SRC			=	main.c ft_patoi.c utils.c ft_strlen.c\
 
 OBJ_DIR		=	obj/
 OBJ			= 	$(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))

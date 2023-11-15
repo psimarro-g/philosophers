@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_patoi.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimarro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 20:51:50 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/02 11:34:51 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:28:34 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	ft_checknb(long long int nb, int neg)
 	return (1);
 }
 
-int	ft_ptr_atoi(const char *str)
+int	ft_patoi(const char *str)
 {
 	int				i;
 	int				neg;
@@ -43,7 +43,7 @@ int	ft_ptr_atoi(const char *str)
 	if (!str[i])
 		return (-1);
 	if (!(str[i] >= '0' && str[i] <= '9'))
-		
+		return (-1);	
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		val = (val * 10) + (str[i++] - '0');

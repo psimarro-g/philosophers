@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimarro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:43:51 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/02 11:33:19 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:43:10 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,10 @@ int main(int argc, char **argv)
 	}
 	program = parse_input(argc, argv);
     check_err(&program, argc);
+	printf("n_philo: %d\n", program.n_philo);
+	printf("t_die: %d\n", program.t_die);
+	printf("t_eat: %d\n", program.t_eat);
+	printf("t_sleep: %d\n", program.t_sleep);
+	printf("n_eat: %d\n", program.n_eat);
     return (0);
 }
