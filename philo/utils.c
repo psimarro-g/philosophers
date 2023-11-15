@@ -6,7 +6,7 @@
 /*   By: psimarro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:56:17 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/02 11:41:03 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:30:12 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,7 @@ void	check_err(t_program *program, int argc)
 {
 	if (program->n_philo < 1|| program->t_die < 0 || program->t_eat < 0
 		|| program->t_sleep < 0)
-	{
-		printf("Error: negative values\n");
-		exit(1);
-	}
+		ft_error("Error: negative values\n");
 	if (argc == 6 && program->n_eat <= 0)
-	{
-		printf("Error: n_eat can't be <= 0\n");
-		exit(1);
-	}
+		ft_error("Error: n_eat can't be <= 0\n");
 }
