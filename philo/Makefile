@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2023/11/07 12:23:08 by psimarro         ###   ########.fr        #
+#    Updated: 2023/12/12 12:34:33 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NAME		=	philo
 
 CC 			=	gcc
 
-CFLAGS		=	-g3 #-Wall -Wextra -Werror
+CFLAGS		=	-g3 -fsanitize=address#-Wall -Wextra -Werror
 
 RM			=	rm -f
 
@@ -35,7 +35,7 @@ RM			=	rm -f
 #                                   SOURCES                                    #
 # **************************************************************************** #
 
-SRC			=	main.c ft_patoi.c utils.c ft_strlen.c\
+SRC			=	main.c init.c ft_patoi.c utils.c launch.c\
 
 OBJ_DIR		=	obj/
 OBJ			= 	$(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
@@ -55,7 +55,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) 
+	$(CC) -o $(NAME) $(OBJ) -fsanitize=address
 	@echo "\n\033[32mCompiled! ᕦ(\033[31m♥\033[32m_\033[31m♥\033[32m)ᕤ\n"
 
 clean:

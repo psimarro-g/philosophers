@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/07 12:24:39 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/12/12 12:23:55 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,21 @@ typedef struct s_program
     t_philo			**philos;
 }				t_program;
 
+/* INIT.C */
+t_program   parse_input(int argc, char **argv);
+t_philo		**init_philos(t_program  *program);
+
+/* LAUNCH.C */
+int			launcher(t_program *program);
+void		*routine(void *data);
+
 /* FT_PATOI.C */
-int	    ft_patoi(const char *str);
+int			ft_patoi(const char *str);
 
 /* UTILS.C */
-void	check_err(t_program *program, int argc);
-void	ft_error(char *str);
-time_t	ft_time(void);
-size_t	ft_strlen(const char *s);
+int			check_err(t_program *program, int argc);
+int			ft_perror(char *str);
+time_t		ft_time(void);
+
 
 #endif

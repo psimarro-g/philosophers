@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psimarro <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:43:51 by psimarro          #+#    #+#             */
-/*   Updated: 2023/11/21 17:26:19 by psimarro         ###   ########.fr       */
+/*   Updated: 2023/12/12 10:55:12 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
-
-t_program   parse_input(int argc, char **argv)
-{
-    t_program   ret;
-
-	memset(&ret, 0, sizeof(t_program));
-	ret.n_philo = ft_patoi(argv[1]);
-    ret.t_die = ft_patoi(argv[2]);
-	ret.t_eat = ft_patoi(argv[3]);
-	ret.t_sleep = ft_patoi(argv[4]);
-	if (argc == 6)
-		ret.n_eat = ft_patoi(argv[5]);
-	else
-		ret.n_eat = -1;
-	ret.dead = 0;
-	ret.full = 0; 
-	ret.t_start = ft_time();
-	return (ret);
-}
 
 int main(int argc, char **argv)
 {
@@ -37,11 +18,15 @@ int main(int argc, char **argv)
 
     if (argc < 5 || argc > 6)
 	{
-		printf("Error: Wrong number of arguments\n");
-		printf("Usage: ./philo n_philo t_die t_eat t_sleep [n_eat]\n");
+		ft_perror("Error: Wrong number of arguments\n");
+		ft_perror("Usage: ./philo n_philo t_die t_eat t_sleep [n_eat]\n");
 		return (1);
 	}
 	program = parse_input(argc, argv);
-    check_err(&program, argc);
+    if (check_err(&program, argc))
+		return (1);
+	program.philos = init_philos(&program);
+	if (launcher(&program))
+		return (ft_perror("Error creating the threads"));
     return (0);
 }
