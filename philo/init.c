@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2023/12/12 12:40:14 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:19:33 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_program   parse_input(int argc, char **argv)
 	ret.full = 0;
 	pthread_mutex_init(&ret.dead_mutex, NULL);
 	pthread_mutex_init(&ret.full_mutex, NULL);
-	ret.t_start = ft_time();
 	return (ret);
 }
 t_philo	*create_philos(t_program *program, int id)
@@ -38,20 +37,15 @@ t_philo	*create_philos(t_program *program, int id)
 
 	philo = (t_philo*)malloc(sizeof(t_philo));
 	philo->id = id;
-	philo->t_die = program->t_die;
-	philo->t_eat = program->t_eat;
-	philo->t_sleep = program->t_sleep;
-	philo->n_eat = program->n_eat;
 	philo->n_eats = 0;
 	philo->t_start = program->t_start;
 	philo->t_last_eat = program->t_start;
-	philo->full = &program->full;
-	philo->dead = &program->dead;
 	philo->fork[1] = malloc(sizeof(int));
 	*philo->fork[1] = 0;
-	//pthread_mutex_init(philo->right_lock, NULL);
+	pthread_mutex_init(&philo->right_lock, NULL);
 	philo->full_mutex = &program->full_mutex;
 	philo->dead_mutex = &program->dead_mutex;
+	philo->program = program;
 	return (philo);
 }
 
@@ -70,7 +64,7 @@ t_philo	**init_philos(t_program  *program)
 	i = 0;
 	while (i < program->n_philo)
 	{
-		philos[i]->left_lock = philos[(i + 1) % program->n_philo]->right_lock;
+		philos[i]->left_lock = &philos[(i + 1) % program->n_philo]->right_lock;
 		philos[i]->fork[0] = philos[(i + 1) % program->n_philo]->fork[1];
 		i++;
 	}

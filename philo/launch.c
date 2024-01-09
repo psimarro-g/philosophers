@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2023/12/12 12:40:27 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/09 21:28:57 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int launcher(t_program *program)
     int         i;
 
     i = 0;
+    program->t_start = ft_time();
     threads = malloc(sizeof(pthread_t) * program->n_philo);
     while (i < program->n_philo)
     {
@@ -30,7 +31,7 @@ int launcher(t_program *program)
     while (i < program->n_philo)
     {
         pthread_join(threads[i], NULL);
-        //pthread_mutex_destroy(program->philos[i]->right_lock);
+        pthread_mutex_destroy(&program->philos[i]->right_lock);
         i++;
     }
     pthread_mutex_destroy(&program->full_mutex);
@@ -40,6 +41,6 @@ int launcher(t_program *program)
 
 void	*routine(void *data)
 {
-	printf("routine%i\n", ((t_philo*)data)->id);
+    
     return (NULL);
 }
