@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/09 21:19:33 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:25:19 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@ t_program   parse_input(int argc, char **argv)
     ret.t_die = ft_patoi(argv[2]);
 	ret.t_eat = ft_patoi(argv[3]);
 	ret.t_sleep = ft_patoi(argv[4]);
+	ret.t_start = ft_time();
 	if (argc == 6)
 		ret.n_eat = ft_patoi(argv[5]);
 	else
 		ret.n_eat = -1;
 	ret.dead = 0;
 	ret.full = 0;
-	pthread_mutex_init(&ret.dead_mutex, NULL);
-	pthread_mutex_init(&ret.full_mutex, NULL);
 	return (ret);
 }
 t_philo	*create_philos(t_program *program, int id)
@@ -38,13 +37,11 @@ t_philo	*create_philos(t_program *program, int id)
 	philo = (t_philo*)malloc(sizeof(t_philo));
 	philo->id = id;
 	philo->n_eats = 0;
-	philo->t_start = program->t_start;
 	philo->t_last_eat = program->t_start;
 	philo->fork[1] = malloc(sizeof(int));
 	*philo->fork[1] = 0;
 	pthread_mutex_init(&philo->right_lock, NULL);
-	philo->full_mutex = &program->full_mutex;
-	philo->dead_mutex = &program->dead_mutex;
+	pthread_mutex_init(&philo->eat_mutex, NULL);
 	philo->program = program;
 	return (philo);
 }

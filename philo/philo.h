@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/09 21:15:34 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:23:22 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ typedef struct s_philo
 {
 	int					id;
 	int					n_eats; // number of times a philo has eaten
-	time_t				t_start;
 	time_t				t_last_eat;
-	int					*fork[2];
+    int				    *fork[2];
 	struct s_program	*program;
 	pthread_mutex_t		right_lock;
+    pthread_mutex_t		eat_mutex;
 	pthread_mutex_t		*left_lock;
-	pthread_mutex_t		*full_mutex;
-	pthread_mutex_t		eat_mutex;
-	pthread_mutex_t		*dead_mutex;
 }				t_philo;
 
 typedef struct s_program
@@ -44,13 +41,11 @@ typedef struct s_program
     int				t_die;
     int				t_eat;
     int				t_sleep;
-    time_t			t_start;
     int				n_eat;
     int				dead;
 	int				full;
+     time_t			t_start;
     pthread_mutex_t	write_lock;
-    pthread_mutex_t	dead_mutex;
-    pthread_mutex_t	full_mutex;
     t_philo			**philos;
 }				t_program;
 
@@ -61,6 +56,7 @@ t_philo		**init_philos(t_program  *program);
 /* LAUNCH.C */
 int			launcher(t_program *program);
 void		*routine(void *data);
+void        check_philos(t_program *program);
 
 /* FT_PATOI.C */
 int			ft_patoi(const char *str);
@@ -69,6 +65,8 @@ int			ft_patoi(const char *str);
 int			check_err(t_program *program, int argc);
 int			ft_perror(char *str);
 time_t		ft_time(void);
+void		philo_sleep(time_t time, int *dead);
+void        print_philo_state(t_philo *philo, char *str);
 
 
 #endif
