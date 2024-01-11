@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/11 20:43:18 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/11 21:54:43 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ static void eat_and_release(t_philo *philo, int *dead)
 	print_philo_state(philo, "has taken a fork");
 	print_philo_state(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->eat_mutex);
-	print_philo_state(philo, "is eating");
 	philo->t_last_eat = ft_time();
 	philo->n_eats++;
 	pthread_mutex_unlock(&philo->eat_mutex);
+	print_philo_state(philo, "is eating");
 	philo_sleep(philo->program->t_eat, dead);
 	pthread_mutex_lock(&philo->right_lock);
 	//print_philo_state(philo, "release right");
@@ -126,7 +126,7 @@ void	*routine(void *data)
     philo = (t_philo*)data;
 	program = philo->program;
 	if (philo->id % 2 == 0)
-		usleep(10000);
+		usleep(1000);
 	while (!(program->dead))
 	{
 		if (!(philo_eat(philo, &program->dead)))
