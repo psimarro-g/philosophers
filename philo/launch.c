@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/11 21:54:43 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:48:46 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ int launcher(t_program *program)
 		pthread_mutex_destroy(&program->philos[i]->eat_mutex);
         i++;
     }
+	while (--i >= 0)
+	{
+		free(program->philos[i]->fork[1]);
+		free(program->philos[i]);
+	}
+	free(program->philos);
+	free(threads);
     return (0);
 }
 
