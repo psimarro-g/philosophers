@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/10 21:23:22 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:30:36 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_program
 	int				full;
      time_t			t_start;
     pthread_mutex_t	write_lock;
+    pthread_mutex_t	dead_lock;
     t_philo			**philos;
 }				t_program;
 
