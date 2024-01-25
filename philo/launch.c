@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 11:41:37 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:03:11 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int launcher(t_program *program)
 		free(program->philos[i++]);
     }
 	pthread_mutex_destroy(&program->write_lock);
-	pthread_mutex_destroy(&program->dead_lock);
 	free(program->philos);
 	free(threads);
     return (0);
@@ -80,24 +79,18 @@ static void eat_and_release(t_philo *philo, int *dead)
 static int philo_eat(t_philo *philo, int *dead)
 {
 	pthread_mutex_lock(&philo->right_lock);
-	//print_philo_state(philo, "try lock right");
 	if (*philo->fork[1] == 1)
 	{
 		pthread_mutex_unlock(&philo->right_lock);
-		//print_philo_state(philo, "unlock right");
 		return (0);
 	}
 	*philo->fork[1] = 1;
-	//print_philo_state(philo, "lock right");
 	pthread_mutex_unlock(&philo->right_lock);
 	pthread_mutex_lock(philo->left_lock);
-	//print_philo_state(philo, "try lock left");
 	if (*philo->fork[0] == 1)
 	{
-		//print_philo_state(philo, "release left");
 		pthread_mutex_unlock(philo->left_lock);
 		pthread_mutex_lock(&philo->right_lock);
-		//print_philo_state(philo, "release right");
 		*philo->fork[1] = 0;
 		pthread_mutex_unlock(&philo->right_lock);
 		return (0);

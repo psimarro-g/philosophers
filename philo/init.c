@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 11:30:46 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:04:16 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_program   parse_input(int argc, char **argv)
 	ret.dead = 0;
 	ret.full = 0;
 	pthread_mutex_init(&ret.write_lock, NULL);
-	pthread_mutex_init(&ret.dead_lock, NULL);
 	return (ret);
 }
 t_philo	*create_philos(t_program *program, int id)
