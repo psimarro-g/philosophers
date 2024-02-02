@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2024/01/25 17:17:22 by psimarro         ###   ########.fr        #
+#    Updated: 2024/01/25 21:12:17 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 # **************************************************************************** #
 
 HEADER		=	philo.h
-NAME		=	philo
+NAME		=	philo_bonus
 
 # **************************************************************************** #
 #                                   COMPILER                                   #
@@ -35,7 +35,7 @@ RM			=	rm -f
 #                                   SOURCES                                    #
 # **************************************************************************** #
 
-SRC			=	main.c init.c ft_patoi.c utils.c launch.c\
+SRC			=	main.c init.c ft_patoi.c utils.c\
 
 OBJ_DIR		=	obj/
 OBJ			= 	$(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))

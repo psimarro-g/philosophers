@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 19:16:56 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/02 21:47:57 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,15 @@ typedef struct s_program
 	int					dead;
 	time_t				t_start;
 	sem_t				*forks;
-	sem_t				*write;
+	sem_t				*write_lock;
 	sem_t				*eat;
 	t_philo				**philos;
 }				t_program;
 
 /* INIT.C */
-t_program	parse_input(int argc, char **argv);
+int			parse_input(t_program *program, int argc, char **argv);
 t_philo		**init_philos(t_program *program);
+void		ft_update_dead(t_philo *philo);
 
 /* LAUNCH.C */
 int			launcher(t_program *program);
