@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/02 21:47:57 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:14:33 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 # define PHILO_H
 
 # include <stdio.h>
-# include <pthread.h>
-# include <semaphore.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <pthread.h>
+# include <semaphore.h>
 
 struct	s_program;
 
@@ -29,7 +30,6 @@ typedef struct s_philo
 	int					id;
 	int					n_eats;
 	time_t				t_last_eat;
-	int					*fork[2];
 	struct s_program	*program;
 	pid_t				proc_id;
 	pthread_t			dead;

@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:43:51 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/02 21:50:25 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:18:34 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 	if (check_err(&program, argc))
 		return (1);
 	program.philos = init_philos(&program);
-	//if (launcher(&program))
-	//	return (ft_perror("Error creating the threads"));
+	if (launcher(&program))
+		return (ft_perror("Error creating the forks\n"));
 	return (0);
 }

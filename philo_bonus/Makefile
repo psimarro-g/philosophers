@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2024/01/25 21:12:17 by psimarro         ###   ########.fr        #
+#    Updated: 2024/02/06 21:01:10 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NAME		=	philo_bonus
 
 CC 			=	gcc
 
-CFLAGS		=	-g3 -fsanitize=address#-Wall -Wextra -Werror
+CFLAGS		=	-g3 -fsanitize=address -lpthread#-Wall -Wextra -Werror
 
 RM			=	rm -f
 
@@ -55,7 +55,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) $(OBJ) -fsanitize=address
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
 	@echo "\n\033[32mCompiled! ᕦ(\033[31m♥\033[32m_\033[31m♥\033[32m)ᕤ\n"
 
 clean:

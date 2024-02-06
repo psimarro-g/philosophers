@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/02 21:50:57 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:09:51 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,39 +39,30 @@ t_philo	*create_philos(t_program *program, int id)
 	philo->id = id;
 	philo->n_eats = 0;
 	philo->t_last_eat = program->t_start;
-	philo->fork[1] = malloc(sizeof(int));
-	*philo->fork[1] = 0;
 	philo->program = program;
 	return (philo);
 }
 
 t_philo	**init_philos(t_program *program)
 {
-	int	i;
-	int	id;
+	t_philo **philos;
+	int 	i;
 
 	i = 0;
+	philos = (t_philo**)malloc(program->n_philo * sizeof(t_philo));
 	while (i < program->n_philo)
 	{
-		id = fork();
-		if (id == 0)
-			printf("child\n");
-		else
-			printf("parent\n");
+		philos[i] = create_philos(program, i + 1);
 		i++;
 	}
-	printf("out\n");
-	i = 0;
-	return (NULL);
+	return (philos);
 }
 
 void	ft_update_dead(t_philo *philo)
 {
 	if (philo->program->dead)
 		return ;
-	pthread_mutex_lock(&philo->program->write_lock);
 	printf("%ld %i died\n", ft_time() - \
 	philo->program->t_start, philo->id);
 	philo->program->dead = 1;
-	pthread_mutex_unlock(&philo->program->write_lock);
 }

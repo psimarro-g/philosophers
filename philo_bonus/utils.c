@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:56:17 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 21:18:18 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:24:06 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ void	philo_sleep(time_t time, int *dead)
 		usleep(100);
 }
 
-// void	print_philo_state(t_philo *philo, char *str)
-// {
-// 	pthread_mutex_lock(&philo->program->write_lock);
-// 	pthread_mutex_lock(&philo->program->write_lock);
-// 	if (!philo->program->dead)
-// 		printf("%ld %i %s\n", ft_time() - \
-// 			philo->program->t_start, philo->id, str);
-// 	pthread_mutex_unlock(&philo->program->write_lock);
-// }
+void	print_philo_state(t_philo *philo, char *str)
+{
+	sem_wait(philo->program->write_lock);
+	if (!philo->program->dead)
+		printf("%ld %i %s\n", ft_time() - philo->program->t_start, philo->id, str);
+	sem_post(philo->program->write_lock);
+}

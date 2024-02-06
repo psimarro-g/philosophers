@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/02 20:53:23 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/02/06 21:24:20 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,27 @@
 
 int	launcher(t_program *program)
 {
-	pthread_t	*threads;
-	int			i;
+	int	i;
+	int	id;
 
 	i = 0;
-	threads = malloc(sizeof(pthread_t) * program->n_philo);
 	while (i < program->n_philo)
 	{
-		if (pthread_create(&threads[i], NULL, &routine, program->philos[i]))
-			return (1);
+		id = fork();
+		if (id == 0)
+			printf("child\n");
+		else
+			printf("parent\n");
 		i++;
 	}
-	check_philos(program);
+	printf("out\n");
 	i = 0;
+	sem_close(program->forks);
+	sem_close(program->write_lock);
 	while (i < program->n_philo)
-	{
-		pthread_join(threads[i], NULL);
-		pthread_mutex_destroy(&program->philos[i]->right_lock);
-		free(program->philos[i]->fork[1]);
 		free(program->philos[i++]);
-	}
-	pthread_mutex_destroy(&program->write_lock);
 	free(program->philos);
-	free(threads);
-	return (0);
+	return (NULL);
 }
 
 void	check_philos(t_program *program)
