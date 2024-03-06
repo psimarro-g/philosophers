@@ -6,120 +6,124 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/06 21:24:20 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:35:14 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-int	launcher(t_program *program)
+static void	kill_philos(t_program *program)
 {
 	int	i;
-	int	id;
+	int	status;
 
-	i = 0;
-	while (i < program->n_philo)
+	i = -1;
+	while (++i < program->n_philo)
 	{
-		id = fork();
-		if (id == 0)
-			printf("child\n");
-		else
-			printf("parent\n");
-		i++;
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		{
+			i = -1;
+			while (++i < program->n_philo)
+				kill(program->philos[i]->proc_id, SIGTERM);
+			break ;
+		}
 	}
-	printf("out\n");
-	i = 0;
 	sem_close(program->forks);
 	sem_close(program->write_lock);
+	sem_close(program->dead_lock);
+	sem_unlink("forks");
+	sem_unlink("write_lock");
+	sem_unlink("dead_lock");
+}
+
+int	launcher(t_program *program)
+{
+	int		i;
+	t_philo	**philo;
+
+	i = -1;
+	philo = program->philos;
+	while (++i < program->n_philo)
+	{
+		philo[i]->proc_id = fork();
+		if (philo[i]->proc_id < 0)
+			return (1);
+		if (philo[i]->proc_id == 0)
+			routine(philo[i]);
+	}
+	kill_philos(program);
 	while (i < program->n_philo)
 		free(program->philos[i++]);
 	free(program->philos);
-	return (NULL);
+	return (0);
 }
 
-void	check_philos(t_program *program)
-{
-	int	i;
-	int	n_eats;
-
-	while (!(program->full))
-	{
-		if (program->dead)
-			return ;
-		i = 0;
-		n_eats = 0;
-		while (i < program->n_philo)
-		{
-			if ((ft_time() - program->philos[i]->t_last_eat) > program->t_die)
-				ft_update_dead(program->philos[i]);
-			if (program->philos[i]->n_eats >= program->n_eat)
-				n_eats++;
-			i++;
-		}
-		if (program->n_eat != -1 && n_eats == program->n_philo)
-			program->full = 1;
-	}
-}
-
-static void	eat_and_release(t_philo *philo, int *dead)
-{
-	print_philo_state(philo, "has taken a fork");
-	print_philo_state(philo, "has taken a fork");
-	if ((ft_time() - philo->t_last_eat) > philo->program->t_die)
-		ft_update_dead(philo);
-	philo->t_last_eat = ft_time();
-	philo->n_eats++;
-	print_philo_state(philo, "is eating");
-	philo_sleep(philo->program->t_eat, dead);
-	*philo->fork[1] = 0;
-	pthread_mutex_unlock(&philo->right_lock);
-	pthread_mutex_unlock(philo->left_lock);
-}
-
-static int	philo_eat(t_philo *philo, int *dead)
-{
-	pthread_mutex_lock(&philo->right_lock);
-	if (*philo->fork[1] == 1)
-	{
-		pthread_mutex_unlock(&philo->right_lock);
-		return (0);
-	}
-	*philo->fork[1] = 1;
-	pthread_mutex_unlock(&philo->right_lock);
-	pthread_mutex_lock(philo->left_lock);
-	if (*philo->fork[0] == 1)
-	{
-		pthread_mutex_unlock(philo->left_lock);
-		pthread_mutex_lock(&philo->right_lock);
-		*philo->fork[1] = 0;
-		pthread_mutex_unlock(&philo->right_lock);
-		return (0);
-	}
-	pthread_mutex_lock(&philo->right_lock);
-	eat_and_release(philo, dead);
-	return (1);
-}
-
-void	*routine(void *data)
+void	*check_philo(void *data)
 {
 	t_philo		*philo;
 	t_program	*program;
+	int			n_eats;
 
 	philo = (t_philo *)data;
 	program = philo->program;
-	if (philo->id % 2 == 0)
+	while (1)
+	{
+		if ((ft_time() - philo->t_last_eat) > program->t_die)
+		{
+			sem_wait(program->dead_lock);
+			print_philo_state(philo, "died");
+			program->dead = 1;
+			sem_wait(program->write_lock);
+			exit(1);
+		}
+		if (program->dead)
+			break ;
 		usleep(1000);
+		if (philo->full)
+			break ;
+	}
+	return (NULL);
+}
+
+static void	eat(t_philo *philo, int *dead)
+{
+	t_program	*program;
+
+	program = philo->program;
+	sem_wait(program->forks);
+	print_philo_state(philo, "has taken a fork");
+	sem_wait(program->forks);
+	print_philo_state(philo, "has taken a fork");
+	print_philo_state(philo, "is eating");
+	philo->t_last_eat = ft_time();
+	philo_sleep(program->t_eat, dead);
+	if (program->n_eat != -1 && ++philo->n_eats == program->n_eat)
+		philo->full = 1;
+	sem_post(program->forks);
+	sem_post(program->forks);
+}
+
+void	routine(t_philo *philo)
+{
+	t_program	*program;
+
+	program = philo->program;
+	if (pthread_create(&philo->dead_check, NULL, &check_philo, philo))
+		exit(1);
+	if (philo->id % 2 == 0)
+		usleep(10000);
 	while (!(program->dead))
 	{
-		if (program->n_philo == 1)
-			continue ;
-		if (!(philo_eat(philo, &program->dead)))
-			continue ;
-		if (program->full)
+		eat(philo, &program->dead);
+		if (philo->full)
 			break ;
 		print_philo_state(philo, "is sleeping");
 		philo_sleep(program->t_sleep, &program->dead);
 		print_philo_state(philo, "is thinking");
 	}
-	return (NULL);
+	pthread_join(philo->dead_check, NULL);
+	if (program->dead)
+		exit(1);
+	exit(0);
 }

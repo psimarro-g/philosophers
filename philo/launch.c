@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 16:03:11 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:50:45 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int launcher(t_program *program)
 		free(program->philos[i++]);
     }
 	pthread_mutex_destroy(&program->write_lock);
+	pthread_mutex_destroy(&program->dead_lock);
 	free(program->philos);
 	free(threads);
     return (0);
@@ -64,8 +65,10 @@ static void eat_and_release(t_philo *philo, int *dead)
 	print_philo_state(philo, "has taken a fork");
 	if ((ft_time() - philo->t_last_eat) > philo->program->t_die)
 	{
+		pthread_mutex_lock(&philo->program->dead_lock);
 		print_philo_state(philo, "died");
 		philo->program->dead = 1;
+		pthread_mutex_unlock(&philo->program->dead_lock);
 	}
 	philo->t_last_eat = ft_time();
 	philo->n_eats++;
@@ -113,8 +116,10 @@ void	*routine(void *data)
 	{
 		if ((ft_time() - philo->t_last_eat) > philo->program->t_die)
 		{
+			pthread_mutex_lock(&program->dead_lock);
 			print_philo_state(philo, "died");
 			philo->program->dead = 1;
+			pthread_mutex_unlock(&program->dead_lock);
 		}
 		if (program->n_philo == 1)
 			continue ;

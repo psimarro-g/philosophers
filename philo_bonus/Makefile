@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2024/02/06 21:01:10 by psimarro         ###   ########.fr        #
+#    Updated: 2024/03/06 11:31:23 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NAME		=	philo_bonus
 
 CC 			=	gcc
 
-CFLAGS		=	-g3 -fsanitize=address -lpthread#-Wall -Wextra -Werror
+CFLAGS		=	-g3 -fsanitize=address#-Wall -Wextra -Werror
 
 RM			=	rm -f
 
@@ -35,7 +35,7 @@ RM			=	rm -f
 #                                   SOURCES                                    #
 # **************************************************************************** #
 
-SRC			=	main.c init.c ft_patoi.c utils.c\
+SRC			=	main.c init.c launch.c ft_patoi.c utils.c\
 
 OBJ_DIR		=	obj/
 OBJ			= 	$(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))

@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/06 21:14:33 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:36:26 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <sys/time.h>
 # include <pthread.h>
 # include <semaphore.h>
@@ -29,10 +30,11 @@ typedef struct s_philo
 {
 	int					id;
 	int					n_eats;
+	int					full;
 	time_t				t_last_eat;
 	struct s_program	*program;
 	pid_t				proc_id;
-	pthread_t			dead;
+	pthread_t			dead_check;
 }				t_philo;
 
 typedef struct s_program
@@ -46,7 +48,8 @@ typedef struct s_program
 	time_t				t_start;
 	sem_t				*forks;
 	sem_t				*write_lock;
-	sem_t				*eat;
+	sem_t				*meals;
+	sem_t				*dead_lock;
 	t_philo				**philos;
 }				t_program;
 
@@ -57,8 +60,8 @@ void		ft_update_dead(t_philo *philo);
 
 /* LAUNCH.C */
 int			launcher(t_program *program);
-void		*routine(void *data);
-void		check_philos(t_program *program);
+void		routine(t_philo *philo);
+void		*check_philo(void *data);
 
 /* FT_PATOI.C */
 int			ft_patoi(const char *str);

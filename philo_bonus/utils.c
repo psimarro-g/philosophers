@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:56:17 by psimarro          #+#    #+#             */
-/*   Updated: 2024/02/06 21:24:06 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:35:47 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	print_philo_state(t_philo *philo, char *str)
 {
 	sem_wait(philo->program->write_lock);
 	if (!philo->program->dead)
-		printf("%ld %i %s\n", ft_time() - philo->program->t_start, philo->id, str);
+		printf("%ld %i %s\n", ft_time() - \
+			philo->program->t_start, philo->id, str);
 	sem_post(philo->program->write_lock);
 }
