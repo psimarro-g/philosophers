@@ -6,19 +6,19 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/06 12:45:40 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:24:55 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
 
-t_program   parse_input(int argc, char **argv)
+t_program	parse_input(int argc, char **argv)
 {
-    t_program   ret;
+	t_program	ret;
 
 	memset(&ret, 0, sizeof(t_program));
 	ret.n_philo = ft_patoi(argv[1]);
-    ret.t_die = ft_patoi(argv[2]);
+	ret.t_die = ft_patoi(argv[2]);
 	ret.t_eat = ft_patoi(argv[3]);
 	ret.t_sleep = ft_patoi(argv[4]);
 	ret.t_start = ft_time();
@@ -33,11 +33,14 @@ t_program   parse_input(int argc, char **argv)
 	return (ret);
 	return (ret);
 }
+
 t_philo	*create_philos(t_program *program, int id)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
-	philo = (t_philo*)malloc(sizeof(t_philo));
+	philo = (t_philo *)malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
 	philo->id = id;
 	philo->n_eats = 0;
 	philo->t_last_eat = program->t_start;
@@ -48,24 +51,29 @@ t_philo	*create_philos(t_program *program, int id)
 	return (philo);
 }
 
-t_philo	**init_philos(t_program  *program)
+t_philo	**init_philos(t_program *program)
 {
-	t_philo **philos;
-	int 	i;
+	t_philo	**philos;
+	int		i;
 
-	i = 0;
-	philos = (t_philo**)malloc(program->n_philo * sizeof(t_philo));
-	while (i < program->n_philo)
+	i = -1;
+	philos = (t_philo **)malloc(program->n_philo * sizeof(t_philo *));
+	if (!philos)
+		return (NULL);
+	while (++i < program->n_philo)
 	{
 		philos[i] = create_philos(program, i + 1);
-		i++;
+		if (!philos[i])
+		{
+			free_philos(program, i);
+			return (NULL);
+		}
 	}
-	i = 0;
-	while (i < program->n_philo)
+	i = -1;
+	while (++i < program->n_philo)
 	{
 		philos[i]->left_lock = &philos[(i + 1) % program->n_philo]->right_lock;
 		philos[i]->fork[0] = philos[(i + 1) % program->n_philo]->fork[1];
-		i++;
 	}
 	return (philos);
 }

@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/06 11:16:07 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 08:40:03 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,18 @@ int	parse_input(t_program *program, int argc, char **argv)
 	else
 		program->n_eat = -1;
 	program->dead = 0;
-	sem_unlink("forks");
-	sem_unlink("write_lock");
-	sem_unlink("dead_lock");
-	program->forks = sem_open("forks", O_CREAT, 0644, program->n_philo);
-	program->write_lock = sem_open("write_lock", O_CREAT, 0644, 1);
-	program->dead_lock = sem_open("dead_lock", O_CREAT, 0644, 1);
-	if (program->forks <= 0 || program->write_lock <= 0 || program->meals <= 0)
+	sem_unlink("/forks");
+	sem_unlink("/write_lock");
+	sem_unlink("/dead_lock");
+	program->forks = sem_open("/forks", O_CREAT, 0644, program->n_philo);
+	program->write_lock = sem_open("/write_lock", O_CREAT, 0644, 1);
+	program->dead_lock = sem_open("/dead_lock", O_CREAT, 0644, 1);
+	if (program->forks != SEM_FAILED || \
+			program->write_lock != SEM_FAILED || program->meals != SEM_FAILED)
+	{
+		ft_perror("Error creating the semaphores");
 		return (1);
+	}
 	return (0);
 }
 

@@ -6,12 +6,11 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:56:17 by psimarro          #+#    #+#             */
-/*   Updated: 2024/01/25 16:04:54 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:32:23 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./philo.h"
-
 
 //get time in miliseconds
 time_t	ft_time(void)
@@ -26,7 +25,7 @@ time_t	ft_time(void)
 
 int	ft_perror(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -39,7 +38,7 @@ int	ft_perror(char *str)
 
 int	check_err(t_program *program, int argc)
 {
-	if (program->n_philo < 1|| program->t_die < 0 || program->t_eat < 0
+	if (program->n_philo < 1 || program->t_die < 0 || program->t_eat < 0
 		|| program->t_sleep < 0)
 		return (ft_perror("Invalid values\nUsage: \
 			./philo n_philo t_die t_eat t_sleep [n_eat]"));
@@ -49,19 +48,20 @@ int	check_err(t_program *program, int argc)
 	return (0);
 }
 
-void   philo_sleep(time_t time, int *dead)
+void	philo_sleep(time_t time, int *dead)
 {
-	time_t  start;
+	time_t	start;
 
 	start = ft_time();
 	while (!(*dead) && ft_time() - start < time)
 		usleep(100);
 }
 
-void print_philo_state(t_philo *philo, char *str)
+void	print_philo_state(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(&philo->program->write_lock);
 	if (!philo->program->dead)
-		printf("%ld %i %s\n", ft_time() - philo->program->t_start, philo->id, str);
+		printf("%ld %i %s\n", ft_time() \
+				- philo->program->t_start, philo->id, str);
 	pthread_mutex_unlock(&philo->program->write_lock);
 }

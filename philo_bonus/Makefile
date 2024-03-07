@@ -6,7 +6,7 @@
 #    By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 22:43:14 by psimarro          #+#    #+#              #
-#    Updated: 2024/03/06 11:31:23 by psimarro         ###   ########.fr        #
+#    Updated: 2024/03/07 08:17:59 by psimarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ NAME		=	philo_bonus
 
 CC 			=	gcc
 
-CFLAGS		=	-g3 -fsanitize=address#-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror
 
 RM			=	rm -f
 
@@ -67,6 +67,4 @@ fclean:				clean
 
 re:			fclean all
 
-bonus:		all
-
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re

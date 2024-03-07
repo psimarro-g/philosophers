@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/06 11:35:14 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 08:50:55 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ static void	kill_philos(t_program *program)
 	sem_close(program->forks);
 	sem_close(program->write_lock);
 	sem_close(program->dead_lock);
-	sem_unlink("forks");
-	sem_unlink("write_lock");
-	sem_unlink("dead_lock");
 }
 
 int	launcher(t_program *program)
@@ -53,9 +50,6 @@ int	launcher(t_program *program)
 			routine(philo[i]);
 	}
 	kill_philos(program);
-	while (i < program->n_philo)
-		free(program->philos[i++]);
-	free(program->philos);
 	return (0);
 }
 
@@ -63,7 +57,6 @@ void	*check_philo(void *data)
 {
 	t_philo		*philo;
 	t_program	*program;
-	int			n_eats;
 
 	philo = (t_philo *)data;
 	program = philo->program;
