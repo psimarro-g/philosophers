@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/06 11:36:26 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:13:04 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef struct s_program
 	sem_t				*dead_lock;
 	t_philo				**philos;
 }				t_program;
+
+/* MAIN.C */
+void		free_philos(t_program *program, int id);
 
 /* INIT.C */
 int			parse_input(t_program *program, int argc, char **argv);

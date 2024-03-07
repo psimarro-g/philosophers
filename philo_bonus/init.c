@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 08:40:03 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:21:12 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	parse_input(t_program *program, int argc, char **argv)
 	program->forks = sem_open("/forks", O_CREAT, 0644, program->n_philo);
 	program->write_lock = sem_open("/write_lock", O_CREAT, 0644, 1);
 	program->dead_lock = sem_open("/dead_lock", O_CREAT, 0644, 1);
-	if (program->forks != SEM_FAILED || \
-			program->write_lock != SEM_FAILED || program->meals != SEM_FAILED)
+	if (program->forks == SEM_FAILED || \
+			program->write_lock == SEM_FAILED || program->meals == SEM_FAILED)
 	{
 		ft_perror("Error creating the semaphores");
 		return (1);
@@ -44,6 +44,8 @@ t_philo	*create_philos(t_program *program, int id)
 	t_philo	*philo;
 
 	philo = (t_philo *)malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
 	philo->id = id;
 	philo->n_eats = 0;
 	philo->full = 0;
@@ -59,9 +61,16 @@ t_philo	**init_philos(t_program *program)
 
 	i = 0;
 	philos = (t_philo **)malloc(program->n_philo * sizeof(t_philo *));
+	if (!philos)
+		return (NULL);
 	while (i < program->n_philo)
 	{
 		philos[i] = create_philos(program, i + 1);
+		if (!philos[i])
+		{
+			free_philos(program, i);
+			return (NULL);
+		}
 		i++;
 	}
 	return (philos);

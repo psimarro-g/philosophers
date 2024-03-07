@@ -10,4 +10,5 @@ obj
 *.a
 .vscode
 philo/philo
+philo/philo_bonus
 *.txt

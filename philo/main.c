@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:43:51 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 09:35:35 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:00:58 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ void	free_philos(t_program *program, int id)
 
 	i = 0;
 	while (i < id)
-	{
-		pthread_mutex_destroy(&program->philos[i]->right_lock);
-		free(program->philos[i]->fork[1]);
-		free(program->philos[i++]);
-	}
 	{
 		pthread_mutex_destroy(&program->philos[i]->right_lock);
 		free(program->philos[i]->fork[1]);
@@ -43,6 +38,7 @@ int	main(int argc, char **argv)
 				./philo n_philo t_die t_eat t_sleep [n_eat]");
 		return (1);
 	}
+	memset(&program, 0, sizeof(t_program));
 	program = parse_input(argc, argv);
 	if (check_err(&program, argc))
 	{

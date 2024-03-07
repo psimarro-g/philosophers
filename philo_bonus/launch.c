@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 08:50:55 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:13:35 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	launcher(t_program *program)
 			routine(philo[i]);
 	}
 	kill_philos(program);
+	free_philos(program, program->n_philo);
 	return (0);
 }
 

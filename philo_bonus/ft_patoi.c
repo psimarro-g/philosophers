@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 20:51:50 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 08:21:10 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:49:58 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	ft_checknb(long long int nb)
 int	ft_patoi(const char *str)
 {
 	int				i;
-
 	long long int	val;
 
 	i = 0;
