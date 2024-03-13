@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 09:31:51 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:07:33 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void		check_philos(t_program *program);
 
 /* FT_PATOI.C */
 int			ft_patoi(const char *str);
+void		print_philo_dead(t_philo *philo, char *str);
 
 /* UTILS.C */
 int			check_err(t_program *program, int argc);

@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 09:29:44 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:29:30 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	check_philos(t_program *program)
 			if ((ft_time() - program->philos[i]->t_last_eat) > program->t_die)
 			{
 				pthread_mutex_lock(&program->dead_lock);
-				print_philo_state(program->philos[i], "died");
-				program->dead = 1;
+				print_philo_dead(program->philos[i], "died");
 				pthread_mutex_unlock(&program->dead_lock);
 				return ;
 			}
@@ -72,6 +71,13 @@ void	check_philos(t_program *program)
 
 static void	eat_and_release(t_philo *philo, int *dead)
 {
+	pthread_mutex_lock(&philo->program->dead_lock);
+	if (philo->program->dead)
+	{
+		pthread_mutex_unlock(&philo->program->dead_lock);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->program->dead_lock);
 	print_philo_state(philo, "has taken a fork");
 	print_philo_state(philo, "has taken a fork");
 	philo->t_last_eat = ft_time();
@@ -121,12 +127,11 @@ void	*routine(void *data)
 		if ((ft_time() - philo->t_last_eat) > philo->program->t_die)
 		{
 			pthread_mutex_lock(&program->dead_lock);
-			print_philo_state(philo, "died");
-			philo->program->dead = 1;
+			print_philo_dead(philo, "died");
 			pthread_mutex_unlock(&program->dead_lock);
 			continue ;
 		}
-		if (!(philo_eat(philo, &program->dead)))
+		if (program->dead || !(philo_eat(philo, &program->dead)))
 			continue ;
 		print_philo_state(philo, "is sleeping");
 		philo_sleep(program->t_sleep, &program->dead);

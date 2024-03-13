@@ -6,9 +6,11 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 20:51:50 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 09:31:26 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:05:57 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 static int	is_space(char c)
 {
@@ -51,4 +53,14 @@ int	ft_patoi(const char *str)
 		return (-1);
 	i = (int)val;
 	return (i);
+}
+
+void	print_philo_dead(t_philo *philo, char *str)
+{
+	pthread_mutex_lock(&philo->program->write_lock);
+	if (!philo->program->dead)
+		printf("%ld %i %s\n", ft_time() \
+				- philo->program->t_start, philo->id, str);
+	philo->program->dead = 1;
+	pthread_mutex_unlock(&philo->program->write_lock);
 }

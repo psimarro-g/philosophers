@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 10:21:12 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:26:30 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,14 @@ t_philo	**init_philos(t_program *program)
 		i++;
 	}
 	return (philos);
+}
+
+void	print_philo_dead(t_philo *philo, char *str)
+{
+	sem_wait(philo->program->write_lock);
+	if (!philo->program->dead)
+		printf("%ld %i %s\n", ft_time() - \
+			philo->program->t_start, philo->id, str);
+	philo->program->dead = 1;
+	sem_post(philo->program->write_lock);
 }

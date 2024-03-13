@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 10:13:35 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:27:30 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void	*check_philo(void *data)
 		if ((ft_time() - philo->t_last_eat) > program->t_die)
 		{
 			sem_wait(program->dead_lock);
-			print_philo_state(philo, "died");
-			program->dead = 1;
+			print_philo_dead(philo, "died");
 			sem_wait(program->write_lock);
 			exit(1);
 		}
@@ -85,6 +84,10 @@ static void	eat(t_philo *philo, int *dead)
 	t_program	*program;
 
 	program = philo->program;
+	sem_wait(program->dead_lock);
+	if (program->dead)
+		return ;
+	sem_post(program->dead_lock);
 	sem_wait(program->forks);
 	print_philo_state(philo, "has taken a fork");
 	sem_wait(program->forks);
@@ -110,7 +113,7 @@ void	routine(t_philo *philo)
 	while (!(program->dead))
 	{
 		eat(philo, &program->dead);
-		if (philo->full)
+		if (philo->full || program->dead)
 			break ;
 		print_philo_state(philo, "is sleeping");
 		philo_sleep(program->t_sleep, &program->dead);
