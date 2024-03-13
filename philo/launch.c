@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:07:35 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/13 10:29:30 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:49:54 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,11 @@ int	launcher(t_program *program)
 			return (1);
 	}
 	check_philos(program);
-	i = 0;
-	while (i < program->n_philo)
-	{
+	i = -1;
+	while (++i < program->n_philo)
 		pthread_join(threads[i], NULL);
-		pthread_mutex_destroy(&program->philos[i]->right_lock);
-		free(program->philos[i]->fork[1]);
-		free(program->philos[i++]);
-	}
-	pthread_mutex_destroy(&program->write_lock);
-	pthread_mutex_destroy(&program->dead_lock);
-	free(program->philos);
 	free(threads);
+	free_philos(program, program->n_philo);
 	return (0);
 }
 
@@ -46,23 +39,24 @@ void	check_philos(t_program *program)
 	int	i;
 	int	eats;
 
-	while (!(program->full))
+	while (!(program->full) && !(program->dead))
 	{
-		if (program->dead)
-			return ;
 		i = -1;
 		eats = 0;
 		while (++i < program->n_philo)
 		{
+			pthread_mutex_lock(&program->philos[i]->eat_mutex);
 			if ((ft_time() - program->philos[i]->t_last_eat) > program->t_die)
 			{
 				pthread_mutex_lock(&program->dead_lock);
 				print_philo_dead(program->philos[i], "died");
 				pthread_mutex_unlock(&program->dead_lock);
+				pthread_mutex_unlock(&program->philos[i]->eat_mutex);
 				return ;
 			}
 			if (program->philos[i]->n_eats >= program->n_eat)
 				eats++;
+			pthread_mutex_unlock(&program->philos[i]->eat_mutex);
 		}
 		if (program->n_eat != -1 && eats == program->n_philo)
 			program->full = 1;
@@ -71,17 +65,12 @@ void	check_philos(t_program *program)
 
 static void	eat_and_release(t_philo *philo, int *dead)
 {
-	pthread_mutex_lock(&philo->program->dead_lock);
-	if (philo->program->dead)
-	{
-		pthread_mutex_unlock(&philo->program->dead_lock);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->program->dead_lock);
 	print_philo_state(philo, "has taken a fork");
 	print_philo_state(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->eat_mutex);
 	philo->t_last_eat = ft_time();
 	philo->n_eats++;
+	pthread_mutex_unlock(&philo->eat_mutex);
 	print_philo_state(philo, "is eating");
 	philo_sleep(philo->program->t_eat, dead);
 	*philo->fork[1] = 0;

@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 08:09:20 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 09:24:55 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:28:14 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_philo	*create_philos(t_program *program, int id)
 	philo->fork[1] = malloc(sizeof(int));
 	*philo->fork[1] = 0;
 	pthread_mutex_init(&philo->right_lock, NULL);
+	pthread_mutex_init(&philo->eat_mutex, NULL);
 	philo->program = program;
 	return (philo);
 }
