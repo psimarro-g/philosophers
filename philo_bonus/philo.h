@@ -6,7 +6,7 @@
 /*   By: psimarro <psimarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 22:45:31 by psimarro          #+#    #+#             */
-/*   Updated: 2024/03/07 10:13:04 by psimarro         ###   ########.fr       */
+/*   Updated: 2024/03/18 17:42:06 by psimarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void		free_philos(t_program *program, int id);
 int			parse_input(t_program *program, int argc, char **argv);
 t_philo		**init_philos(t_program *program);
 void		ft_update_dead(t_philo *philo);
+void		print_philo_dead(t_philo *philo, char *str);
 
 /* LAUNCH.C */
 int			launcher(t_program *program);
