@@ -25,7 +25,10 @@ static void	kill_philos(t_program *program)
 		{
 			i = -1;
 			while (++i < program->n_philo)
+			{
 				kill(program->philos[i]->proc_id, SIGTERM);
+				waitpid(program->philos[i]->proc_id, NULL, 0);
+			}
 			break ;
 		}
 	}
